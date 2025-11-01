@@ -4,9 +4,6 @@ A server-authoritative multiplayer Tic-Tac-Toe game built with Node.js (WebSocke
 
 <img width="672" height="626" alt="image" src="https://github.com/user-attachments/assets/024a3f77-0d9f-4eb3-b0f4-4e8ab0774bd8" />
 
-<img width="672" height="626" alt="image" src="https://github.com/user-attachments/assets/f2f41f17-ae48-46ed-b523-9a46a4ab0d44" />
-
-
 
 ## Features
 
