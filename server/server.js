@@ -151,6 +151,7 @@ function createGame(playerId1, playerId2) {
   player1.send(
     JSON.stringify({
       type: "gameStart",
+      id: playerId1,
       gameId,
       side: "X",
       opponent: playerId2,
@@ -162,6 +163,7 @@ function createGame(playerId1, playerId2) {
   player2.send(
     JSON.stringify({
       type: "gameStart",
+      id: playerId2,
       gameId,
       side: "O",
       opponent: playerId1,

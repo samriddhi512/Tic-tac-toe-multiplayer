@@ -8,6 +8,7 @@ const findBtn = document.getElementById("findBtn");
 const rematchBtn = document.getElementById("rematchBtn");
 
 let ws = null;
+let myId = null;
 let gameId = null;
 let mySide = null;
 let board = Array(9).fill(null);
@@ -35,6 +36,8 @@ function connect() {
         case "gameStart":
           gameId = data.gameId;
           mySide = data.side;
+          myId = data.id;
+          currentTurn = data.turn;
           gameActive = true;
           updateStatus(data.message);
           enableCells();
@@ -97,14 +100,8 @@ function updateStatus(status) {
 }
 
 function isMyTurn() {
-  if (!gameActive || !mySide) return false;
-
-  // Infer turn from board: if X count == O count, it's X's turn
-  const xCount = board.filter((c) => c === "X").length;
-  const oCount = board.filter((c) => c === "O").length;
-  const nextTurn = xCount === oCount ? "X" : "O";
-
-  return nextTurn === mySide;
+  if (!gameActive || !myId || !currentTurn) return false;
+  return currentTurn === myId;
 }
 
 function getStatusText() {
