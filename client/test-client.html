@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Test</title>
+  </head>
+  <body>
+    <h1>WebSocket Connection Test</h1>
+    <div id="status">Not connected</div>
+    <button onclick="connect()">Connect</button>
+    <button onclick="send()">Send Test Message</button>
+    <div id="messages"></div>
+
+    <script>
+      let ws = null;
+
+      function updateStatus(msg) {
+        document.getElementById("status").textContent = msg;
+      }
+
+      function addMessage(msg) {
+        const div = document.createElement("div");
+        div.textContent = msg;
+        document.getElementById("messages").appendChild(div);
+      }
+
+      function connect() {
+        addMessage("Attempting to connect to ws://localhost:8080...");
+
+        // THIS is what creates a WebSocket connection
+        // Websocket is a built in global for browsers but only the client api is available
+        // WebSocket.Server is undefined here.
+        ws = new WebSocket("ws://localhost:8080");
+
+        ws.onopen = () => {
+          updateStatus("🟢 Connected");
+          addMessage("WebSocket connection opened!");
+        };
+
+        ws.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          addMessage("📨 Received: " + JSON.stringify(data));
+        };
+
+        ws.onerror = (error) => {
+          updateStatus("🔴 Error");
+          addMessage("Error: " + error);
+        };
+
+        ws.onclose = () => {
+          updateStatus("⚫ Disconnected");
+          addMessage("WebSocket closed");
+        };
+      }
+
+      function send() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          const message = { type: "findGame", text: "Hello from client!" };
+          ws.send(JSON.stringify(message));
+          addMessage("📤 Sent: " + JSON.stringify(message));
+        }
+      }
+
+      // browsers create a websocket via js.
+      // http://localhost:8080 makes an http get. This does not make a connection to wss
+      // in this script we execute new websocket() which sends the http upgrade request with updated ws info
+    </script>
+  </body>
+</html>
